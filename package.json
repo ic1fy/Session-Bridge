@@ -1,0 +1,19 @@
+{
+  "name": "chatgpt-session-web-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-only macOS Web service for opening an authorized ChatGPT session in Microsoft Edge.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "test:watch": "node --test --watch"
+  },
+  "dependencies": {
+    "playwright-core": "1.61.1"
+  }
+}
+

@@ -1,0 +1,27 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  role="img"
+  aria-label="Session Bridge"
+>
+  <defs>
+    <linearGradient id="surface" x1="8" y1="5" x2="56" y2="59">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#edf4ff"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="14" y1="20" x2="50" y2="44">
+      <stop offset="0" stop-color="#0071e3"/>
+      <stop offset="0.55" stop-color="#5e5ce6"/>
+      <stop offset="1" stop-color="#af52de"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="url(#surface)"/>
+  <path
+    d="M12 32h8m24 0h8M25 22h14a10 10 0 0 1 0 20H25a10 10 0 0 1 0-20Z"
+    fill="none"
+    stroke="url(#stroke)"
+    stroke-width="4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
