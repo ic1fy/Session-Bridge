@@ -1,0 +1,9 @@
+.git/
+.github/
+.playwright-cli/
+coverage/
+docs/
+output/
+test/
+*.log
+.DS_Store

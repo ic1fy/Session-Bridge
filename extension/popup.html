@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Session Bridge</title>
+    <link rel="stylesheet" href="popup.css">
+    <script type="module" src="popup.js"></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div class="app-mark" aria-hidden="true">
+          <img src="assets/mark.svg" alt="">
+        </div>
+        <div class="hero-copy">
+          <h1>
+            <span>Session</span>
+            <span class="bridge">Bridge</span>
+          </h1>
+          <p>在隔离的无痕窗口中打开会话</p>
+        </div>
+      </header>
+
+      <ol class="guide" aria-label="使用步骤">
+        <li>
+          <span class="step-number">1</span>
+          <span class="guide-copy">
+            登录
+            <a href="https://chatgpt.com" target="_blank" rel="noreferrer">
+              https://chatgpt.com
+            </a>
+          </span>
+        </li>
+        <li>
+          <span class="step-number">2</span>
+          <span class="guide-copy">
+            登录后打开
+            <a
+              href="https://chatgpt.com/api/auth/session"
+              target="_blank"
+              rel="noreferrer"
+            >
+              https://chatgpt.com/api/auth/session
+            </a>
+          </span>
+        </li>
+        <li>
+          <span class="step-number">3</span>
+          <span class="guide-copy">复制页面全部内容（不可缺漏）</span>
+        </li>
+      </ol>
+
+      <p class="permission-note">
+        首次使用，请在扩展详情中<strong>开启无痕模式访问权限</strong>。
+      </p>
+
+      <form id="session-form" novalidate>
+        <div class="field-heading">
+          <label for="session-json">会话 JSON</label>
+          <span id="character-count" aria-live="polite">0 字符</span>
+        </div>
+
+        <div class="textarea-wrap">
+          <textarea
+            id="session-json"
+            name="sessionJson"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder='粘贴包含 "sessionToken" 的完整 JSON…'
+          ></textarea>
+          <button
+            id="clear-button"
+            class="clear-button"
+            type="button"
+            aria-label="清空输入"
+            hidden
+          >
+            清空
+          </button>
+        </div>
+
+        <button id="submit-button" class="primary-button" type="submit">
+          <span class="button-label">验证并打开无痕窗口</span>
+          <span class="spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <div id="status" class="status" role="status" aria-live="polite" hidden>
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="status-text"></span>
+      </div>
+    </main>
+  </body>
+</html>
