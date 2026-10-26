@@ -1,6 +1,6 @@
 import { BridgeError } from "./errors.js";
 
-export const MAX_INPUT_BYTES = 32 * 1024;
+export const MAX_INPUT_BYTES = 128 * 1024;
 const BASE64URL = /^[A-Za-z0-9_-]+$/;
 const utf8Encoder = new TextEncoder();
 const utf8Decoder = new TextDecoder("utf-8", { fatal: true });
@@ -28,7 +28,7 @@ export function parseSessionJson(text, { now = Date.now() } = {}) {
   if (utf8Encoder.encode(text).byteLength > MAX_INPUT_BYTES) {
     throw new BridgeError(
       "INPUT_TOO_LARGE",
-      "粘贴内容超过 32 KiB 限制。",
+      "粘贴内容超过 128 KiB 限制。",
     );
   }
 

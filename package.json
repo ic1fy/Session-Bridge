@@ -1,19 +1,19 @@
 {
-  "name": "chatgpt-session-web-service",
+  "name": "session-bridge",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Local-only macOS Web service for opening an authorized ChatGPT session in Microsoft Edge.",
+  "description": "Open an authorized ChatGPT session in an isolated browser private window.",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test",
-    "test:watch": "node --test --watch"
+    "test:watch": "node --test --watch",
+    "package:extension": "sh scripts/package-extension.sh"
   },
   "dependencies": {
     "playwright-core": "1.61.1"
   }
 }
-

@@ -4,8 +4,9 @@ Session Bridge 可在 Microsoft Edge 和 Google Chrome 中本机解析 ChatGPT
 Session JSON，将登录 Cookie 写入独立的无痕 Cookie 仓，验证后在同一个页签
 打开 ChatGPT。
 
-不需要 Node.js、Playwright、本地服务或公网服务器。Session JSON 和 Token
-不会上传、保存或输出到日志。
+不需要 Node.js、Playwright、本地服务或公网服务器。Session JSON 在本机解析；浏览器会将导入的 Cookie
+发送给 chatgpt.com 进行验证和使用。扩展不会将凭证发送给项目作者或第三方，
+不会将其保存到扩展持久化存储或输出到日志。
 
 ## 安装到 Microsoft Edge
 
@@ -45,6 +46,9 @@ Session JSON，将登录 Cookie 写入独立的无痕 Cookie 仓，验证后在�
 扩展会拒绝与已经打开的其他无痕窗口共用 Cookie 仓。看到提示时，请先关闭
 所有无痕窗口，再重新操作。
 
+输入最多支持 **128 KiB（UTF-8 字节）**。字符计数不等同于字节数。
+如果 JSON 仅有 `accessToken` 而没有 `sessionToken`，当前版本不能导入。
+
 ## 一次性与隔离
 
 - 扩展只读取 `sessionToken` 和可选的 `expires`。
@@ -72,3 +76,10 @@ Bridge 卡片上点击“重新加载”。给少数可信用户测试时，可�
 `extension/` 目录或项目生成的 ZIP 包发送给对方，由对方按安装步骤加载。
 
 扩展商店发布和自动更新不在当前版本范围内。
+
+## 项目与开发说明
+
+源码、完整 README 和问题反馈：
+[ic1fy/Session-Bridge](https://github.com/ic1fy/Session-Bridge)。
+
+提交问题时只提供错误提示和复现步骤，不附带真实会话 JSON 或 Cookie。

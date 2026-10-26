@@ -72,8 +72,8 @@ test("rejects missing, altered, expired, and invalid-expiry sessions", () => {
   );
 });
 
-test("enforces the 32 KiB limit by UTF-8 bytes", () => {
-  assert.equal(MAX_INPUT_BYTES, 32 * 1024);
+test("enforces the 128 KiB limit by UTF-8 bytes", () => {
+  assert.equal(MAX_INPUT_BYTES, 128 * 1024);
   assert.throws(
     () => parseSessionJson("你".repeat(Math.ceil(MAX_INPUT_BYTES / 3) + 1)),
     (error) => error.code === "INPUT_TOO_LARGE",
