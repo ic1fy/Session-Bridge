@@ -43,20 +43,3 @@
 扩展只向 `chatgpt.com` 写入和发送会话 Cookie，不上传到项目作者或第三方，不记录 Token 日志。临时状态只保存窗口 ID 和 Cookie 存储 ID，导入失败会回滚，关闭目标窗口会尝试清理导入的 Cookie。
 
 Session JSON 是登录凭证，请勿提交到 Issue 或分享给他人。使用过程中不要在其他无痕窗口登录另一个账号。该工具非 OpenAI 官方产品，依赖当前会话格式和 Cookie 命名，网站变化可能影响兼容性。
-
-## 开发
-
-需要 Node.js 22+，无需安装依赖：
-
-```sh
-npm test
-npm run package:extension
-```
-
-打包需要 POSIX shell 和 `zip`，Windows 可使用 Git Bash 或 WSL。生成 `dist/session-bridge-chromium-extension.zip`，包含 `extension/` 和这份 README。
-
-- `extension/`：面板、会话解析、Cookie 与无痕窗口管理。
-- `test/`：解析、Cookie 分段、窗口隔离、回滚、并发和权限测试。
-- `scripts/`：打包脚本。
-
-测试使用合成数据，不需要真实账号。GitHub Actions 自动运行测试和打包。
