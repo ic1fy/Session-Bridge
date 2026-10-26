@@ -5,3 +5,10 @@ coverage/
 .playwright-cli/
 output/
 dist/
+
+.env
+.env.*
+*.pem
+*.key
+session.json
+cookies.json

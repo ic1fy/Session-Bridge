@@ -51,21 +51,34 @@ async function writeSessionCookies(browser, storeId, sessionToken) {
   }
 }
 
-function waitForTabComplete(browser, tabId, timeoutMs = VERIFY_TIMEOUT_MS) {
+function waitForTabComplete(browser, tabId, timeoutMs, signal) {
   return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
+    function cleanup() {
+      clearTimeout(timeout);
       browser.tabs.onUpdated.removeListener(onUpdated);
+      signal.removeEventListener("abort", onAbort);
+    }
+
+    function onAbort() {
+      cleanup();
+      reject(new Error("Verification navigation was cancelled."));
+    }
+
+    const timeout = setTimeout(() => {
+      cleanup();
       reject(new Error("Timed out while waiting for the verification tab."));
     }, timeoutMs);
 
-    function onUpdated(updatedTabId, changeInfo) {
+    function onUpdated(updatedTabId, changeInfo, tab) {
       if (updatedTabId !== tabId || changeInfo.status !== "complete") return;
-      clearTimeout(timeout);
-      browser.tabs.onUpdated.removeListener(onUpdated);
+      // The initial about:blank page can finish after this listener is added.
+      if (tab?.url !== CHATGPT_SESSION_URL) return;
+      cleanup();
       resolve();
     }
 
     browser.tabs.onUpdated.addListener(onUpdated);
+    signal.addEventListener("abort", onAbort, { once: true });
   });
 }
 
@@ -202,16 +215,23 @@ export async function openIsolatedSession(
     }
 
     let accepted;
+    const verification = new AbortController();
     try {
-      const tabReady = waitForTab(browser, tabId, VERIFY_TIMEOUT_MS);
-      await browser.tabs.update(tabId, { url: CHATGPT_SESSION_URL });
-      await tabReady;
+      const tabReady = waitForTab(
+        browser, tabId, VERIFY_TIMEOUT_MS, verification.signal,
+      );
+      await Promise.all([
+        tabReady,
+        browser.tabs.update(tabId, { url: CHATGPT_SESSION_URL }),
+      ]);
       accepted = await verifyTab(browser, tabId);
     } catch {
       throw new BridgeError(
         "SESSION_VERIFICATION_FAILED",
         "无法连接 ChatGPT 验证会话。",
       );
+    } finally {
+      verification.abort();
     }
     if (!accepted) {
       throw new BridgeError(

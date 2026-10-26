@@ -1,28 +1,11 @@
-import {
-  cleanupManagedSession,
-  openIsolatedSession,
-} from "./lib/browser-session.js";
+import { cleanupManagedSession } from "./lib/browser-session.js";
+import { createSessionRequestHandler } from "./lib/session-request.js";
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+const handleSessionRequest = createSessionRequestHandler(chrome);
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "OPEN_SESSION") return false;
-  if (typeof message.sessionToken !== "string") {
-    sendResponse({
-      ok: false,
-      code: "INVALID_SESSION_REQUEST",
-      error: "会话请求无效，请重新粘贴完整 JSON。",
-    });
-    return false;
-  }
-
-  openIsolatedSession(message.sessionToken, { browser: chrome })
-    .then(() => sendResponse({ ok: true }))
-    .catch((error) =>
-      sendResponse({
-        ok: false,
-        code: error.code ?? "OPEN_SESSION_FAILED",
-        error: error.safeMessage ?? "无法打开隔离会话。",
-      }),
-    );
+  void handleSessionRequest(message, sender).then(sendResponse);
   return true;
 });
 

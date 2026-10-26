@@ -298,3 +298,49 @@ test("cleans only the managed window state on window close", async () => {
     true,
   );
 });
+
+function addTabEvents(browser) {
+  const listeners = new Set();
+  browser.tabs.onUpdated = {
+    addListener: (listener) => listeners.add(listener),
+    removeListener: (listener) => listeners.delete(listener),
+  };
+  return listeners;
+}
+
+test("ignores initial blank-page completion and waits for the verification URL", async () => {
+  const fake = createFakeBrowser();
+  const listeners = addTabEvents(fake.browser);
+  let verified = false;
+  fake.browser.tabs.update = async (tabId, { url }) => {
+    if (url.endsWith("/api/auth/session")) {
+      for (const listener of listeners) {
+        listener(tabId, { status: "complete" }, { url: "about:blank" });
+      }
+      await Promise.resolve();
+      assert.equal(verified, false);
+      assert.equal(listeners.size, 1);
+      for (const listener of listeners) {
+        listener(tabId, { status: "complete" }, { url });
+      }
+    }
+  };
+  await openIsolatedSession("abc", {
+    browser: fake.browser,
+    verifyTab: async () => { verified = true; return true; },
+  });
+  assert.equal(verified, true);
+  assert.equal(listeners.size, 0);
+});
+
+test("removes the pending verification listener when navigation fails", async () => {
+  const fake = createFakeBrowser();
+  const listeners = addTabEvents(fake.browser);
+  fake.browser.tabs.update = async () => { throw new Error("tab closed"); };
+  await assert.rejects(
+    openIsolatedSession("abc", { browser: fake.browser }),
+    { code: "SESSION_VERIFICATION_FAILED" },
+  );
+  assert.equal(listeners.size, 0);
+  assert.equal(fake.sessionState.managedSession, undefined);
+});
