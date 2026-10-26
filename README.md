@@ -1,6 +1,6 @@
 <h1 align="center">Session Bridge</h1>
 
-用于 Microsoft Edge 和 Google Chrome，在无痕窗口中打开本人或已获授权的 ChatGPT 会话。
+<p align="center">用于 Microsoft Edge 和 Google Chrome，在无痕窗口中打开本人或已获授权的 ChatGPT 会话。</p>
 
 ## 安装
 
