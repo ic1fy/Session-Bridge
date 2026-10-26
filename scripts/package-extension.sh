@@ -12,4 +12,4 @@ if [ -f "$archive" ]; then
 fi
 
 cd "$project_dir"
-COPYFILE_DISABLE=1 zip -X -r "$archive" extension -x "*/.DS_Store"
+COPYFILE_DISABLE=1 zip -X -r "$archive" extension README.md -x "*/.DS_Store"

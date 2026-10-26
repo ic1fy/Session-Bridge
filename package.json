@@ -8,12 +8,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "start": "node src/server.js",
     "test": "node --test",
     "test:watch": "node --test --watch",
     "package:extension": "sh scripts/package-extension.sh"
-  },
-  "dependencies": {
-    "playwright-core": "1.61.1"
   }
 }

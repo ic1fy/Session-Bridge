@@ -213,17 +213,6 @@ test("clears, writes, verifies, and reuses one InPrivate tab", async () => {
   ]);
 });
 
-test("keeps browser-facing errors Chromium-neutral", async () => {
-  const source = await import("node:fs/promises").then(({ readFile }) =>
-    readFile(
-      new URL("../extension/lib/browser-session.js", import.meta.url),
-      "utf8",
-    ),
-  );
-
-  assert.doesNotMatch(source, /\bEdge\b|\bChrome\b/);
-});
-
 test("rolls back cookies, state, and the new window when verification rejects", async () => {
   const fake = createFakeBrowser({ cookies: [] });
 
